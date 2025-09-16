@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
   CreditCard, 
@@ -17,14 +17,39 @@ import {
   CheckCircle,
   Clock,
   XCircle,
-  School
+  School,
+  Filter,
+  ChevronDown
 } from 'lucide-react';
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
+  
+  // State for functionality
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState(new Date());
+  const [dateRange, setDateRange] = useState('30'); // Default to 30 days
+  const [showDateDropdown, setShowDateDropdown] = useState(false);
+  const [showExportMenu, setShowExportMenu] = useState(false);
+
+  // Date range options
+  const dateRangeOptions = [
+    { value: '7', label: 'Last 7 days' },
+    { value: '30', label: 'Last 30 days' },
+    { value: '90', label: 'Last 90 days' },
+    { value: '365', label: 'Last year' },
+    { value: 'custom', label: 'Custom range' }
+  ];
+
+  // Export options
+  const exportOptions = [
+    { format: 'csv', label: 'Export as CSV', description: 'Comma-separated values' },
+    { format: 'excel', label: 'Export as Excel', description: 'Microsoft Excel format' },
+    { format: 'pdf', label: 'Export as PDF', description: 'Printable PDF report' }
+  ];
 
   // Mock data for the dashboard
-  const stats = [
+  const [stats, setStats] = useState([
     {
       title: 'Total Revenue',
       value: '₹2,45,680',
@@ -69,9 +94,9 @@ const Dashboard: React.FC = () => {
       textColor: 'text-orange-700 dark:text-orange-300',
       description: 'Payment success rate'
     },
-  ];
+  ]);
 
-  const recentTransactions = [
+  const [recentTransactions, setRecentTransactions] = useState([
     {
       id: 'TXN001',
       collectId: 'COL_001_2025',
@@ -147,7 +172,7 @@ const Dashboard: React.FC = () => {
       date: '2025-09-16T10:30:00Z',
       paymentTime: '2025-09-16T10:30:45Z'
     }
-  ];
+  ]);
 
   const quickActions = [
     {
@@ -175,6 +200,107 @@ const Dashboard: React.FC = () => {
       bgColor: 'bg-purple-50 dark:bg-purple-900/20'
     }
   ];
+
+  // Handle refresh functionality
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    
+    // Simulate API call
+    try {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Update last updated time
+      setLastUpdated(new Date());
+      
+      // In a real app, you would fetch new data from your API here
+      console.log('Data refreshed successfully');
+      
+      // Show success notification (you can implement toast notifications)
+      alert('Dashboard data refreshed successfully!');
+      
+    } catch (error) {
+      console.error('Error refreshing data:', error);
+      alert('Failed to refresh data. Please try again.');
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
+  // Handle date range change
+  const handleDateRangeChange = (range: string) => {
+    setDateRange(range);
+    setShowDateDropdown(false);
+    
+    // In a real app, you would filter data based on the selected range
+    console.log(`Date range changed to: ${range} days`);
+    
+    // You can add API call here to fetch filtered data
+    // Example: fetchDashboardData(range);
+  };
+
+  // Handle export functionality
+  const handleExport = (format: string) => {
+    setShowExportMenu(false);
+    
+    try {
+      if (format === 'csv') {
+        downloadCSV();
+      } else if (format === 'excel') {
+        downloadExcel();
+      } else if (format === 'pdf') {
+        downloadPDF();
+      }
+    } catch (error) {
+      console.error('Export error:', error);
+      alert('Failed to export data. Please try again.');
+    }
+  };
+
+  // CSV Export
+  const downloadCSV = () => {
+    const headers = ['Transaction ID', 'School', 'Student', 'Amount', 'Status', 'Date'];
+    const csvData = recentTransactions.map(t => [
+      t.id,
+      t.school,
+      t.studentName,
+      t.amount,
+      t.status,
+      new Date(t.date).toLocaleDateString()
+    ]);
+    
+    const csvContent = [headers, ...csvData]
+      .map(row => row.join(','))
+      .join('\n');
+    
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.setAttribute('href', url);
+    a.setAttribute('download', `transactions_${dateRange}days.csv`);
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
+
+  // Excel Export (simplified - in real app you'd use a library like xlsx)
+  const downloadExcel = () => {
+    alert('Excel export functionality would be implemented with a library like SheetJS/xlsx');
+  };
+
+  // PDF Export (simplified - in real app you'd use a library like jsPDF)
+  const downloadPDF = () => {
+    alert('PDF export functionality would be implemented with a library like jsPDF');
+  };
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = () => {
+      setShowDateDropdown(false);
+      setShowExportMenu(false);
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, []);
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -220,6 +346,11 @@ const Dashboard: React.FC = () => {
     });
   };
 
+  const getSelectedDateLabel = () => {
+    const option = dateRangeOptions.find(opt => opt.value === dateRange);
+    return option ? option.label : 'Last 30 days';
+  };
+
   return (
     <div className="space-y-8">
       {/* Page Header */}
@@ -234,19 +365,85 @@ const Dashboard: React.FC = () => {
         </div>
         
         <div className="flex items-center gap-3">
-          <button className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-            <Calendar className="w-4 h-4 mr-2" />
-            Last 30 days
-          </button>
+          {/* Date Range Selector */}
+          <div className="relative">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowDateDropdown(!showDateDropdown);
+              }}
+              className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+            >
+              <Calendar className="w-4 h-4 mr-2" />
+              {getSelectedDateLabel()}
+              <ChevronDown className="w-4 h-4 ml-2" />
+            </button>
+
+            {/* Date Range Dropdown */}
+            {showDateDropdown && (
+              <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
+                {dateRangeOptions.map((option) => (
+                  <button
+                    key={option.value}
+                    onClick={() => handleDateRangeChange(option.value)}
+                    className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ${
+                      dateRange === option.value 
+                        ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400' 
+                        : 'text-gray-700 dark:text-gray-300'
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
           
-          <button className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-            <Download className="w-4 h-4 mr-2" />
-            Export
-          </button>
+          {/* Export Button */}
+          <div className="relative">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowExportMenu(!showExportMenu);
+              }}
+              className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+            >
+              <Download className="w-4 h-4 mr-2" />
+              Export
+              <ChevronDown className="w-4 h-4 ml-2" />
+            </button>
+
+            {/* Export Dropdown */}
+            {showExportMenu && (
+              <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
+                {exportOptions.map((option) => (
+                  <button
+                    key={option.format}
+                    onClick={() => handleExport(option.format)}
+                    className="w-full text-left px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                  >
+                    <div className="font-medium text-gray-900 dark:text-white text-sm">
+                      {option.label}
+                    </div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      {option.description}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
           
-          <button className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl text-sm font-medium hover:from-indigo-600 hover:to-purple-700 transition-all transform hover:scale-105 shadow-lg">
-            <RefreshCw className="w-4 h-4 mr-2" />
-            Refresh
+          {/* Refresh Button */}
+          <button
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+            className={`inline-flex items-center px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl text-sm font-medium hover:from-indigo-600 hover:to-purple-700 transition-all transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none ${
+              isRefreshing ? 'animate-pulse' : ''
+            }`}
+          >
+            <RefreshCw className={`w-4 h-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
+            {isRefreshing ? 'Refreshing...' : 'Refresh'}
           </button>
         </div>
       </div>
@@ -463,7 +660,7 @@ const Dashboard: React.FC = () => {
 
       {/* Footer Info */}
       <div className="text-center text-sm text-gray-500 dark:text-gray-400">
-        Last updated: {new Date().toLocaleString('en-IN')}
+        Last updated: {lastUpdated.toLocaleString('en-IN')}
       </div>
     </div>
   );

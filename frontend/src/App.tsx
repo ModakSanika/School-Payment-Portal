@@ -12,6 +12,8 @@ import CreatePayment from './components/payments/CreatePayment';
 import Layout from './components/layout/Layout';
 import LoadingSpinner from './components/common/LoadingSpinner';
 import NotFound from './components/common/NotFound';
+// Import the missing pages
+import { Analytics, Schools, Settings, Help } from './components/pages/MissingPages';
 import './index.css';
 
 // Protected Route Component
@@ -52,10 +54,10 @@ const AppRoutes: React.FC = () => {
   
   return (
     <Routes>
-   <Route path="/login" element={<LoginForm />} />
+      <Route path="/login" element={<LoginForm />} />
       
       {/* Root redirect - goes to login if not authenticated, dashboard if authenticated */}
-   <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="/" element={<Navigate to="/login" replace />} />
       
       {/* Protected Routes */}
       <Route
@@ -70,11 +72,17 @@ const AppRoutes: React.FC = () => {
                 {/* Alternative: Use SimpleDashboard for testing */}
                 {/* <Route index element={<SimpleDashboard />} /> */}
                 
-                {/* Sub-routes */}
+                {/* Existing Sub-routes */}
                 <Route path="transactions" element={<TransactionOverview />} />
                 <Route path="transactions/school/:schoolId" element={<TransactionDetails />} />
                 <Route path="transaction-status" element={<TransactionStatus />} />
                 <Route path="create-payment" element={<CreatePayment />} />
+                
+                {/* NEW: Missing pages that were causing empty screens */}
+                <Route path="analytics" element={<Analytics />} />
+                <Route path="schools" element={<Schools />} />
+                <Route path="settings" element={<Settings />} />
+                <Route path="help" element={<Help />} />
               </Routes>
             </Layout>
           </ProtectedRoute>

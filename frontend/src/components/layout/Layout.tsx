@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
@@ -8,8 +8,40 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  // Sidebar state management
+  const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
+    // Get saved sidebar state from localStorage, default to true for desktop
+    const saved = localStorage.getItem('sidebarOpen');
+    if (saved !== null) {
+      return JSON.parse(saved);
+    }
+    // Default to open on desktop, closed on mobile
+    return window.innerWidth >= 1024;
+  });
+
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
   const location = useLocation();
+
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 1024;
+      setIsMobile(mobile);
+      
+      // Auto-close sidebar on mobile when resizing
+      if (mobile && isSidebarOpen) {
+        setIsSidebarOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isSidebarOpen]);
+
+  // Save sidebar state to localStorage
+  useEffect(() => {
+    localStorage.setItem('sidebarOpen', JSON.stringify(isSidebarOpen));
+  }, [isSidebarOpen]);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -36,12 +68,23 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <div className="relative z-10 flex h-screen">
         {/* Sidebar */}
         <Sidebar 
-          isOpen={isSidebarOpen} 
-          onClose={closeSidebar} 
+          isOpen={isSidebarOpen}
+          onClose={closeSidebar}
+          isMobile={isMobile}  // ← Fixed: Added missing isMobile prop
         />
 
+        {/* Mobile sidebar backdrop */}
+        {isMobile && isSidebarOpen && (
+          <div 
+            className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity"
+            onClick={closeSidebar}
+          />
+        )}
+
         {/* Main Content Area */}
-        <div className="flex-1 flex flex-col min-w-0">
+        <div className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${
+          !isMobile && isSidebarOpen ? 'lg:ml-72' : 'lg:ml-16'
+        }`}>
           {/* Header */}
           <Header 
             onToggleSidebar={toggleSidebar}
@@ -63,14 +106,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </div>
           </main>
         </div>
-
-        {/* Mobile Sidebar Overlay */}
-        {isSidebarOpen && (
-          <div 
-            className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
-            onClick={closeSidebar}
-          />
-        )}
       </div>
     </div>
   );

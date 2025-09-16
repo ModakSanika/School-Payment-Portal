@@ -17,6 +17,7 @@ import { clsx } from 'clsx';
 interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
+  isMobile: boolean;
 }
 
 interface NavItem {
@@ -27,7 +28,7 @@ interface NavItem {
   description?: string;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, isMobile }) => {
   const location = useLocation();
 
   const navigation: NavItem[] = [
@@ -91,7 +92,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     return location.pathname.startsWith(href);
   };
 
-  const NavItem: React.FC<{ item: NavItem; onClick?: () => void }> = ({ item, onClick }) => {
+  const NavItem: React.FC<{ item: NavItem; onClick?: () => void; isCollapsed?: boolean }> = ({ 
+    item, 
+    onClick, 
+    isCollapsed = false 
+  }) => {
     const Icon = item.icon;
     const isCurrent = isCurrentPath(item.href);
 
@@ -105,35 +110,42 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg'
             : 'text-gray-700 dark:text-gray-300 hover:bg-white/50 dark:hover:bg-gray-700/50 hover:text-gray-900 dark:hover:text-white'
         )}
+        title={isCollapsed ? item.name : ''}
       >
         {/* Background gradient effect for current item */}
         {isCurrent && (
           <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl blur opacity-20"></div>
         )}
         
-        <div className="relative flex items-center w-full">
+        <div className={clsx(
+          'relative flex items-center w-full',
+          isCollapsed && 'justify-center'
+        )}>
           <Icon className={clsx(
-            'mr-3 h-5 w-5 flex-shrink-0 transition-colors',
-            isCurrent ? 'text-white' : 'text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-400'
+            'h-5 w-5 flex-shrink-0 transition-colors',
+            isCurrent ? 'text-white' : 'text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-400',
+            !isCollapsed && 'mr-3'
           )} />
           
-          <div className="flex-1 min-w-0">
-            <span className="truncate">
-              {item.name}
-            </span>
-            {item.description && (
-              <p className={clsx(
-                'text-xs mt-1 truncate transition-colors',
-                isCurrent 
-                  ? 'text-white/80' 
-                  : 'text-gray-500 dark:text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300'
-              )}>
-                {item.description}
-              </p>
-            )}
-          </div>
+          {!isCollapsed && (
+            <div className="flex-1 min-w-0">
+              <span className="truncate">
+                {item.name}
+              </span>
+              {item.description && (
+                <p className={clsx(
+                  'text-xs mt-1 truncate transition-colors',
+                  isCurrent 
+                    ? 'text-white/80' 
+                    : 'text-gray-500 dark:text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300'
+                )}>
+                  {item.description}
+                </p>
+              )}
+            </div>
+          )}
 
-          {item.badge && (
+          {!isCollapsed && item.badge && (
             <span className={clsx(
               'ml-auto inline-block py-0.5 px-2 text-xs rounded-full',
               isCurrent
@@ -149,83 +161,22 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         {isCurrent && (
           <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-1 h-8 bg-white rounded-l-full"></div>
         )}
+
+        {/* Tooltip for collapsed state */}
+        {isCollapsed && (
+          <div className="absolute left-full ml-2 px-2 py-1 bg-gray-900 dark:bg-gray-700 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-50">
+            {item.name}
+          </div>
+        )}
       </NavLink>
     );
   };
 
-  return (
-    <>
-      {/* Desktop Sidebar */}
-      <div className="hidden lg:flex lg:w-72 lg:flex-col lg:fixed lg:inset-y-0 z-50">
-        <div className="flex flex-col flex-grow bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border-r border-gray-200/50 dark:border-gray-700/50 shadow-xl">
-          
-          {/* Logo Section */}
-          <div className="flex items-center flex-shrink-0 px-6 py-6 border-b border-gray-200/50 dark:border-gray-700/50">
-            <div className="flex items-center">
-              <div className="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                <CreditCard className="w-6 h-6 text-white" />
-              </div>
-              <div className="ml-3">
-                <h1 className="text-lg font-bold text-gray-900 dark:text-white">
-                  School Pay
-                </h1>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
-                  Payment Dashboard
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Navigation */}
-          <div className="flex flex-col flex-1 overflow-hidden">
-            <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto custom-scrollbar">
-              
-              {/* Primary Navigation */}
-              <div className="space-y-1">
-                <h3 className="px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Main
-                </h3>
-                {navigation.map((item) => (
-                  <NavItem key={item.name} item={item} />
-                ))}
-              </div>
-
-              {/* Secondary Navigation */}
-              <div className="pt-6 space-y-1">
-                <h3 className="px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Tools
-                </h3>
-                {secondaryNavigation.map((item) => (
-                  <NavItem key={item.name} item={item} />
-                ))}
-              </div>
-            </nav>
-
-            {/* Bottom Section */}
-            <div className="flex-shrink-0 px-4 py-4 border-t border-gray-200/50 dark:border-gray-700/50">
-              <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl p-4">
-                <div className="flex items-center">
-                  <div className="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
-                    <BarChart3 className="w-4 h-4 text-white" />
-                  </div>
-                  <div className="ml-3 flex-1">
-                    <p className="text-sm font-medium text-gray-900 dark:text-white">
-                      Need Help?
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                      Documentation & Support
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Sidebar */}
+  if (isMobile) {
+    // Mobile Sidebar
+    return (
       <div className={clsx(
-        'lg:hidden fixed inset-y-0 left-0 z-50 w-72 transform transition-transform duration-300 ease-in-out',
+        'fixed inset-y-0 left-0 z-50 w-72 transform transition-transform duration-300 ease-in-out',
         isOpen ? 'translate-x-0' : '-translate-x-full'
       )}>
         <div className="flex flex-col h-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl shadow-2xl border-r border-gray-200/50 dark:border-gray-700/50">
@@ -276,7 +227,94 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           </nav>
         </div>
       </div>
-    </>
+    );
+  }
+
+  // Desktop Sidebar
+  return (
+    <div className={clsx(
+      'fixed inset-y-0 left-0 z-50 flex flex-col transition-all duration-300 ease-in-out',
+      isOpen ? 'w-72' : 'w-16'
+    )}>
+      <div className="flex flex-col flex-grow bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border-r border-gray-200/50 dark:border-gray-700/50 shadow-xl">
+        
+        {/* Logo Section */}
+        <div className={clsx(
+          'flex items-center flex-shrink-0 px-6 py-6 border-b border-gray-200/50 dark:border-gray-700/50 transition-all duration-300',
+          !isOpen && 'px-4 justify-center'
+        )}>
+          <div className="flex items-center">
+            <div className="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
+              <CreditCard className="w-6 h-6 text-white" />
+            </div>
+            {isOpen && (
+              <div className="ml-3 transition-all duration-300">
+                <h1 className="text-lg font-bold text-gray-900 dark:text-white">
+                  School Pay
+                </h1>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  Payment Dashboard
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Navigation */}
+        <div className="flex flex-col flex-1 overflow-hidden">
+          <nav className={clsx(
+            'flex-1 py-6 space-y-2 overflow-y-auto custom-scrollbar transition-all duration-300',
+            isOpen ? 'px-4' : 'px-2'
+          )}>
+            
+            {/* Primary Navigation */}
+            <div className="space-y-1">
+              {isOpen && (
+                <h3 className="px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Main
+                </h3>
+              )}
+              {navigation.map((item) => (
+                <NavItem key={item.name} item={item} isCollapsed={!isOpen} />
+              ))}
+            </div>
+
+            {/* Secondary Navigation */}
+            <div className="pt-6 space-y-1">
+              {isOpen && (
+                <h3 className="px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Tools
+                </h3>
+              )}
+              {secondaryNavigation.map((item) => (
+                <NavItem key={item.name} item={item} isCollapsed={!isOpen} />
+              ))}
+            </div>
+          </nav>
+
+          {/* Bottom Section */}
+          {isOpen && (
+            <div className="flex-shrink-0 px-4 py-4 border-t border-gray-200/50 dark:border-gray-700/50">
+              <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl p-4">
+                <div className="flex items-center">
+                  <div className="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                    <BarChart3 className="w-4 h-4 text-white" />
+                  </div>
+                  <div className="ml-3 flex-1">
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">
+                      Need Help?
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      Documentation & Support
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 
