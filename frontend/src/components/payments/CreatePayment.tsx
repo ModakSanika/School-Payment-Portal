@@ -6,6 +6,7 @@ import {
   User,
   Mail,
   Hash,
+  XCircle,
   DollarSign,
   FileText,
   AlertCircle,
@@ -14,7 +15,6 @@ import {
   ExternalLink,
   Copy,
   RefreshCw,
-  XCircle,
   Shield,
   Clock
 } from 'lucide-react';
@@ -29,6 +29,17 @@ interface PaymentFormData {
   amount: number;
   description: string;
   dueDate: string;
+}
+
+interface FormErrors {
+  schoolId?: string;
+  studentName?: string;
+  studentId?: string;
+  studentEmail?: string;
+  feeType?: string;
+  amount?: string;
+  description?: string;
+  dueDate?: string;
 }
 
 interface PaymentResponse {
@@ -56,7 +67,7 @@ const CreatePayment: React.FC = () => {
   });
 
   // UI state
-  const [errors, setErrors] = useState<Partial<PaymentFormData>>({});
+  const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
   const [paymentResponse, setPaymentResponse] = useState<PaymentResponse | null>(null);
   const [showPreview, setShowPreview] = useState(false);
@@ -86,7 +97,7 @@ const CreatePayment: React.FC = () => {
 
   // Validation
   const validateForm = (): boolean => {
-    const newErrors: Partial<PaymentFormData> = {};
+    const newErrors: FormErrors = {};
 
     if (!formData.schoolId) {
       newErrors.schoolId = 'School selection is required';
@@ -142,7 +153,7 @@ const CreatePayment: React.FC = () => {
     }));
 
     // Clear specific field error
-    if (errors[name as keyof PaymentFormData]) {
+    if (errors[name as keyof FormErrors]) {
       setErrors(prev => ({
         ...prev,
         [name]: undefined

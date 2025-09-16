@@ -262,8 +262,8 @@ const TransactionOverview: React.FC = () => {
 
     // Apply sorting
     filtered.sort((a, b) => {
-      let aValue = a[sortField];
-      let bValue = b[sortField];
+      let aValue: any = a[sortField];
+      let bValue: any = b[sortField];
 
       // Handle null values
       if (aValue === null && bValue === null) return 0;
@@ -271,9 +271,9 @@ const TransactionOverview: React.FC = () => {
       if (bValue === null) return sortDirection === 'asc' ? -1 : 1;
 
       // Convert to comparable values
-      if (typeof aValue === 'string') {
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
         aValue = aValue.toLowerCase();
-        bValue = (bValue as string).toLowerCase();
+        bValue = bValue.toLowerCase();
       }
 
       if (aValue < bValue) {

@@ -1,228 +1,114 @@
-import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 // Types
 interface User {
-  _id: string;
+  id: string;
   email: string;
-  name: string;
+  name?: string;
   role?: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
 interface AuthContextType {
   user: User | null;
   token: string | null;
-  login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
-  logout: () => void;
   isLoading: boolean;
   isAuthenticated: boolean;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => void;
 }
-
-// Mock auth service functions (replace with real API calls later)
-const mockAuthService = {
-  login: async (credentials: { email: string; password: string }) => {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Mock successful login
-    if (credentials.email === 'demo@school.com' && credentials.password === 'demo123') {
-      return {
-        user: {
-          _id: '1',
-          email: credentials.email,
-          name: 'Demo User',
-          role: 'admin',
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
-        },
-        token: 'mock_jwt_token_12345',
-        expiresIn: 3600
-      };
-    } else {
-      throw new Error('Invalid email or password');
-    }
-  },
-  
-  register: async (data: { name: string; email: string; password: string }) => {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    return {
-      user: {
-        _id: '2',
-        email: data.email,
-        name: data.name,
-        role: 'user',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      }
-    };
-  },
-
-  logout: async () => {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 500));
-  },
-
-  initializeAuth: () => {
-    const token = localStorage.getItem('school_payment_token');
-    const userStr = localStorage.getItem('school_payment_user');
-    const user = userStr ? JSON.parse(userStr) : null;
-    
-    return {
-      user,
-      token,
-      isAuthenticated: !!(token && user)
-    };
-  }
-};
-
-const getErrorMessage = (error: any): string => {
-  if (typeof error === 'string') return error;
-  if (error?.message) return error.message;
-  return 'An unexpected error occurred';
-};
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
 
 interface AuthProviderProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
+// Create the context
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+// Auth Provider Component
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Initialize authentication state from storage
-  const initializeAuth = useCallback(() => {
-    try {
-      setIsLoading(true);
-      
-      const authData = mockAuthService.initializeAuth();
-      
-      setUser(authData.user);
-      setToken(authData.token);
-      setIsAuthenticated(authData.isAuthenticated);
-      
-      console.log('Auth initialized:', {
-        hasUser: !!authData.user,
-        hasToken: !!authData.token,
-        isAuthenticated: authData.isAuthenticated
-      });
-      
-    } catch (error) {
-      console.error('Auth initialization failed:', error);
-      setUser(null);
-      setToken(null);
-      setIsAuthenticated(false);
-    } finally {
-      setIsLoading(false);
+  // Initialize auth state from localStorage on mount
+  useEffect(() => {
+    const savedToken = localStorage.getItem('authToken');
+    const savedUser = localStorage.getItem('authUser');
+    
+    if (savedToken && savedUser) {
+      try {
+        setToken(savedToken);
+        setUser(JSON.parse(savedUser));
+      } catch (error) {
+        console.error('Failed to parse saved user data:', error);
+        // Clear invalid data
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('authUser');
+      }
     }
   }, []);
 
-  // Initialize auth on component mount
-  useEffect(() => {
-    initializeAuth();
-  }, [initializeAuth]);
-
   // Login function
   const login = async (email: string, password: string): Promise<void> => {
+    setIsLoading(true);
+    
     try {
-      setIsLoading(true);
+      // Demo authentication - replace with actual API call
+      console.log('Login attempt:', { email, password }); // Debug log
       
-      const loginResponse = await mockAuthService.login({ email, password });
+      if (email.trim().toLowerCase() === 'demo@school.com' && password.trim() === 'demo123') {
+        // Simulate API delay
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        const userData: User = {
+          id: '1',
+          email: 'demo@school.com',
+          name: 'Demo User',
+          role: 'admin'
+        };
+        
+        const authToken = 'demo-jwt-token-123456789';
+        
+        // Set user and token
+        setUser(userData);
+        setToken(authToken);
+        
+        // Save to localStorage
+        localStorage.setItem('authToken', authToken);
+        localStorage.setItem('authUser', JSON.stringify(userData));
+        
+        return;
+      }
       
-      setUser(loginResponse.user);
-      setToken(loginResponse.token);
-      setIsAuthenticated(true);
+      // For other credentials, throw error
+      throw new Error('Invalid email or password. Please use demo@school.com / demo123');
       
-      // Store in localStorage
-      localStorage.setItem('school_payment_token', loginResponse.token);
-      localStorage.setItem('school_payment_user', JSON.stringify(loginResponse.user));
-      
-      console.log('Login successful:', loginResponse.user.email);
-      
-    } catch (error) {
-      console.error('Login failed:', error);
-      setUser(null);
-      setToken(null);
-      setIsAuthenticated(false);
-      throw new Error(getErrorMessage(error));
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Register function
-  const register = async (name: string, email: string, password: string): Promise<void> => {
-    try {
-      setIsLoading(true);
-      
-      const registerResponse = await mockAuthService.register({ name, email, password });
-      
-      console.log('Registration successful:', registerResponse.user.email);
-      
-      // Note: After registration, user typically needs to login
-      // We don't automatically authenticate after registration
-      
-    } catch (error) {
-      console.error('Registration failed:', error);
-      throw new Error(getErrorMessage(error));
+    } catch (error: any) {
+      throw error;
     } finally {
       setIsLoading(false);
     }
   };
 
   // Logout function
-  const logout = useCallback(async (): Promise<void> => {
-    try {
-      setIsLoading(true);
-      
-      await mockAuthService.logout();
-      
-      setUser(null);
-      setToken(null);
-      setIsAuthenticated(false);
-      
-      // Clear localStorage
-      localStorage.removeItem('school_payment_token');
-      localStorage.removeItem('school_payment_user');
-      
-      console.log('Logout successful');
-      
-    } catch (error) {
-      console.error('Logout failed:', error);
-      // Even if server logout fails, clear local state
-      setUser(null);
-      setToken(null);
-      setIsAuthenticated(false);
-      localStorage.removeItem('school_payment_token');
-      localStorage.removeItem('school_payment_user');
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+  const logout = () => {
+    setUser(null);
+    setToken(null);
+    
+    // Clear localStorage
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('authUser');
+  };
 
-  // Provide authentication context
+  // Computed values
+  const isAuthenticated = !!user && !!token;
+
   const value: AuthContextType = {
     user,
     token,
     isLoading,
     isAuthenticated,
     login,
-    register,
     logout
   };
 
@@ -231,4 +117,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
+};
+
+// Custom hook to use the auth context
+export const useAuth = (): AuthContextType => {
+  const context = useContext(AuthContext);
+  
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  
+  return context;
 };

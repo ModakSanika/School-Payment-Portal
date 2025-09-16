@@ -16,7 +16,8 @@ import {
   AlertCircle,
   CheckCircle,
   Clock,
-  XCircle
+  XCircle,
+  School
 } from 'lucide-react';
 
 const Dashboard: React.FC = () => {

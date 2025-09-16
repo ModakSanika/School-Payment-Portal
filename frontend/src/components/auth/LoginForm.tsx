@@ -318,22 +318,30 @@ const LoginForm: React.FC = () => {
             <div className={`mt-6 pt-4 border-t ${
               isDark ? 'border-gray-600' : 'border-blue-600'
             }`}>
-              <div className={`rounded p-3 ${
-                isDark ? 'bg-gray-700/50' : 'bg-blue-800'
-              }`}>
-                <h4 className={`text-xs font-semibold mb-1 flex items-center ${
-                  isDark ? 'text-gray-200' : 'text-blue-100'
-                }`}>
+              <div className="bg-gray-700/50 rounded p-3">
+                <h4 className="text-blue-100 text-xs font-semibold mb-1 flex items-center">
                   <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                   </svg>
                   Demo Login
                 </h4>
-                <p className={`text-xs ${
-                  isDark ? 'text-gray-300' : 'text-blue-200'
-                }`}>
+                <p className="text-blue-200 text-xs mb-2">
                   <span className="font-mono">demo@school.com</span> / <span className="font-mono">demo123</span>
                 </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFormData({
+                      email: 'demo@school.com',
+                      password: 'demo123'
+                    });
+                    setErrors({});
+                    setLoginError('');
+                  }}
+                  className="text-xs bg-blue-100 dark:bg-blue-800/30 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-700/30 transition-colors"
+                >
+                  Fill Demo Data
+                </button>
               </div>
             </div>
           </div>
