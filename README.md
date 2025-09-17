@@ -214,12 +214,5 @@ npm run test
 
 MIT
 
----
 
-If you'd like, I can:
 
-* convert this into a `README.md` file and add a short `vercel.json` example for SPA rewrites,
-* generate example Postman environment entries, or
-* produce a checklist PR template for deployments.
-
-Tell me which of the above you'd like me to add next.
