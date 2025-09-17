@@ -1,5 +1,4 @@
 import { CURRENCY_CONFIG, VALIDATION_RULES } from './constants';
-import type { StatusType } from '../types';
 
 // Currency Formatting
 export const formatCurrency = (amount: number | string): string => {
@@ -289,7 +288,7 @@ export const debounce = <T extends (...args: any[]) => any>(
   func: T,
   delay: number
 ): ((...args: Parameters<T>) => void) => {
-  let timeoutId: NodeJS.Timeout;
+  let timeoutId: ReturnType<typeof setTimeout>;
   
   return (...args: Parameters<T>) => {
     clearTimeout(timeoutId);

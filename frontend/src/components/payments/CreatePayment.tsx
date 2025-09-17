@@ -1,5 +1,5 @@
 import SimplePaymentTest from '../../components/SimplePaymentTest';
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   CreditCard, 
@@ -104,7 +104,7 @@ const CreatePayment: React.FC = () => {
   const [showPreview, setShowPreview] = useState<boolean>(false);
 
   // Load available schools from localStorage
-  const [schools, setSchools] = useState<School[]>(() => {
+  const [schools] = useState<School[]>(() => {
     const savedSchools = localStorage.getItem('schools');
     if (savedSchools) {
       try {

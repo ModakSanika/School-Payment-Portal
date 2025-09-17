@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+
 import Sidebar from './Sidebar';
 import Header from './Header';
 
@@ -20,7 +20,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   });
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
-  const location = useLocation();
+  
 
   // Handle window resize
   useEffect(() => {

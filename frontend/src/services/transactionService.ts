@@ -1,14 +1,14 @@
 import { apiService } from './api';
 import { API_ENDPOINTS } from '../utils/constants';
-import { buildQueryString } from '../utils/helpers';
+//import { buildQueryString } from '../utils/helpers';
 import type { 
   Transaction, 
   PaymentRequest, 
   PaymentResponse, 
   TransactionFilters, 
-  QueryParams,
+
   PaginatedResponse,
-  ApiResponse
+
 } from '../types';
 
 export class TransactionService {

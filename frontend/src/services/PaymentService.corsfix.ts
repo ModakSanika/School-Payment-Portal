@@ -1,8 +1,7 @@
 // src/services/PaymentService.corsfix.ts
 export class PaymentServiceCORSFix {
   private static API_BASE_URL = 'https://dev-vanilla.edviron.com/erp';
-  private static API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0cnVzdGVlSWQiOiI2NWIwZTU1MmRkMzE5NTBhOWI0MWM1YmEiLCJJbmRleE9mQXBpS2V5Ijo2fQ.IJWTYCOurGCFdRM2xyKtw6TEcuwXxGnmINrXFfs';
-  
+ 
   static async createPayment(schoolId: string, amount: number, callbackUrl: string): Promise<any> {
     console.log('🎭 DEVELOPMENT MODE: Simulating payment creation');
     console.log('Creating payment with:', { schoolId, amount, callbackUrl });

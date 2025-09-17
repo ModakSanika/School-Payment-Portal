@@ -9,7 +9,7 @@ import {
   Sun, 
   Moon,
   Menu,
-  X,
+  
   ChevronDown
 } from 'lucide-react';
 
@@ -27,7 +27,7 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, isSidebarOpen }) => {
   });
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
-  const [currentUser, setCurrentUser] = useState(() => {
+  const [currentUser] = useState(() => {
     // Get user from localStorage or fallback to demo
     const savedUser = localStorage.getItem('user');
     return savedUser ? JSON.parse(savedUser) : {

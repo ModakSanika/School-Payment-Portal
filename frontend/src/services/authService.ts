@@ -1,7 +1,7 @@
 import { apiService } from './api';
-import { API_ENDPOINTS, AUTH_CONFIG, SUCCESS_MESSAGES } from '../utils/constants';
+import { API_ENDPOINTS, AUTH_CONFIG} from '../utils/constants';
 import { storage } from '../utils/helpers';
-import type { User, LoginCredentials, RegisterData, ApiResponse } from '../types';
+import type { User, LoginCredentials, RegisterData} from '../types';
 
 interface LoginResponse {
   user: User;
