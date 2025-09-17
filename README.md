@@ -211,9 +211,10 @@ npm run test
 
 ## 📸 Screenshots
 ### Login Page
-![Login Screenshot](../images/Screenshots/Screenshot (479).png)
+![Login Screenshot](../images/Screenshots/Screenshot(479).png)
 ### Dashboard
 ![Dashboard Screenshot](./docs/screenshots/dashboard.png)
+
 
 
 
