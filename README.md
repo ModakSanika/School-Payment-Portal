@@ -15,7 +15,7 @@ Full-stack application to manage school payments, transactions and status tracki
 
 ## 🏗 Architecture
 
-**Frontend (Vercel)** ⇄ **Backend API (Railway/Render)** ⇄ **MongoDB Atlas**
+**Frontend (Vercel)** ⇄ **Backend API ** ⇄ **MongoDB Atlas**
 
 * Frontend: React + Vite + Tailwind (SPA)
 * Backend: NestJS + Mongoose + JWT
@@ -239,6 +239,7 @@ npm run test
 
 ### Extra
 ![Extra](./frontend/public/images/Screenshots/Screenshot%202025-09-17%20134951.png)
+
 
 
 
