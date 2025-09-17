@@ -17,15 +17,28 @@ const SimplePaymentTest: React.FC = () => {
       };
 
       console.log('Making API call with:', requestBody);
-
-      const response = await fetch('https://dev-vanilla.edviron.com/erp/create-collect-request', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0cnVzdGVlSWQiOiI2NWIwZTU1MmRkMzE5NTBhOWI0MWM1YmEiLCJJbmRleE9mQXBpS2V5Ijo2fQ.IJWTYCOurGCFdRM2xyKtw6TEcuwXxGnmINrXFfs'
-        },
-        body: JSON.stringify(requestBody)
-      });
+    // THIS IS CORRECT:
+const response = await fetch('http://localhost:3001/api/v1/payments/create-payment', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    school_id: '65b0e6293e9f76a9694d84b4',
+    student_info: {
+      name: 'Test Student',
+      id: 'TEST001',
+      email: 'test@example.com'
+    },
+    order_amount: 100,
+    gateway_name: 'PhonePe',
+    fee_type: 'Test Fee',
+    description: 'Test payment',
+    due_date: '2025-12-31',
+    callback_url: 'http://localhost:5173/payment/callback',
+    redirect_url: 'http://localhost:5173/dashboard'
+  })
+});
 
       console.log('Response status:', response.status);
       console.log('Response headers:', response.headers);
