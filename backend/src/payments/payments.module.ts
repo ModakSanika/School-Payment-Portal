@@ -1,12 +1,40 @@
+// backend/src/payments/payments.module.ts
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+import { HttpModule } from '@nestjs/axios';
+import { ConfigModule } from '@nestjs/config';
+
+// Import your existing schemas
+import { Order } from '../orders/schemas/order.schema';
+import { OrderStatus } from '../orders/schemas/order-status.schema';
+import { OrderSchema } from '../orders/schemas/order.schema';
+import { OrderStatusSchema } from '../orders/schemas/order-status.schema';
+
+// Payment-related files
 import { PaymentsController } from './payments.controller';
 import { PaymentsService } from './payments.service';
-import { OrdersModule } from '../orders/orders.module';
 
 @Module({
-  imports: [OrdersModule],
+  imports: [
+    // Configuration module
+    ConfigModule,
+    
+    // HTTP module for external API calls to Edviron
+    HttpModule.registerAsync({
+      useFactory: () => ({
+        timeout: 30000,
+        maxRedirects: 5,
+      }),
+    }),
+    
+    // Mongoose schemas for payments
+    MongooseModule.forFeature([
+      { name: Order.name, schema: OrderSchema },
+      { name: OrderStatus.name, schema: OrderStatusSchema },
+    ]),
+  ],
   controllers: [PaymentsController],
   providers: [PaymentsService],
-  exports: [PaymentsService],
+  exports: [PaymentsService], // Export if other modules need to use it
 })
 export class PaymentsModule {}

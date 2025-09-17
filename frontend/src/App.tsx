@@ -16,6 +16,10 @@ import NotFound from './components/common/NotFound';
 import { Analytics, Schools, Settings, Help } from './components/pages/MissingPages';
 import './index.css';
 import SimplePaymentTest from './components/SimplePaymentTest';
+// Add this route to your router
+import DemoPayment from './pages/DemoPayment';
+
+
 
 // Protected Route Component
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -56,6 +60,9 @@ const AppRoutes: React.FC = () => {
   return (
     <Routes>
       <Route path="/login" element={<LoginForm />} />
+      // In your routes:
+      <Route path="/demo-payment" element={<DemoPayment />} />
+
       
       {/* Root redirect - goes to login if not authenticated, dashboard if authenticated */}
       <Route path="/" element={<Navigate to="/login" replace />} />

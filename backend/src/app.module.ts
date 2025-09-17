@@ -1,3 +1,4 @@
+// backend/src/app.module.ts
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -6,12 +7,17 @@ import { PassportModule } from '@nestjs/passport';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 
+// Your existing modules (keep only the ones that exist)
 import { AuthModule } from './auth/auth.module';
 import { OrdersModule } from './orders/orders.module';
 import { PaymentsModule } from './payments/payments.module';
 import { WebhooksModule } from './webhooks/webhooks.module';
+
+// Your existing controllers and services
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+
+// JWT Guard from auth module (assuming it exists there)
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 
 @Module({
@@ -61,7 +67,7 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
       inject: [ConfigService],
     }),
 
-    // Feature Modules
+    // Your existing feature modules
     AuthModule,
     OrdersModule,
     PaymentsModule,
@@ -70,10 +76,11 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
   controllers: [AppController],
   providers: [
     AppService,
-    {
-      provide: APP_GUARD,
-      useClass: JwtAuthGuard,
-    },
+    // Temporarily comment out the global JWT guard to test without auth
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: JwtAuthGuard,
+    // },
   ],
 })
 export class AppModule {}
