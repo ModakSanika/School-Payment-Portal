@@ -211,9 +211,34 @@ npm run test
 
 ## 📸 Screenshots
 ### Login Page
-![Login Screenshot](../images/Screenshots/Screenshot(479).png)
+## 📸 Screenshots
+
 ### Dashboard
-![Dashboard Screenshot](./docs/screenshots/dashboard.png)
+![Dashboard](./frontend/public/images/Screenshots/Screenshot%20(479).png)
+
+### Login Page
+![Login](./frontend/public/images/Screenshots/Screenshot%20(480).png)
+
+### Transactions
+![Transactions](./frontend/public/images/Screenshots/Screenshot%20(491).png)
+
+### Payment Flow
+![Payment](./frontend/public/images/Screenshots/Screenshot%20(492).png)
+
+### Analytics
+![Analytics](./frontend/public/images/Screenshots/Screenshot%20(493).png)
+
+### Settings
+![Settings](./frontend/public/images/Screenshots/Screenshot%20(494).png)
+
+### Help & Support
+![Help](./frontend/public/images/Screenshots/Screenshot%20(495).png)
+
+### Dark Mode
+![Dark Mode](./frontend/public/images/Screenshots/Screenshot%20(496).png)
+
+### Extra
+![Extra](./frontend/public/images/Screenshots/Screenshot%202025-09-17%20134951.png)
 
 
 
