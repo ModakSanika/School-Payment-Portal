@@ -1,8 +1,8 @@
-🏫 School Payment & Dashboard Application
+**🏫 School Payment & Dashboard Application**
 
 Full-stack app to manage school payments, transactions, and status tracking with a modern React dashboard.
 
-🌐 Live URLs
+**🌐 Live URLs**
 
 Frontend (Vercel): https://your-frontend.vercel.app
 
@@ -12,27 +12,27 @@ API Docs (Swagger): https://your-backend.onrailway.app/api
 
 Replace the placeholders after you deploy.
 
-🏗️ Architecture
+**🏗️ Architecture**
 Frontend (Vercel)  ⇄  Backend API (Railway/Render)  ⇄  MongoDB Atlas
 
-📁 Monorepo Structure
-📦 Packages
+
+**📦 Packages**
 school-payment-app/
 ├─ backend/    # NestJS API (MongoDB, JWT, Webhooks)
 └─ frontend/   # React + Vite + Tailwind dashboard (SPA)
 
-🛠 Tech Stack
+**🛠 Tech Stack**
 
 Backend: NestJS, MongoDB Atlas (Mongoose), JWT, Swagger
 Frontend: React, TypeScript, Vite, Tailwind CSS (dark mode, custom animations)
 Tooling: Axios, React Router, Postman, ESLint/Prettier
 
-✨ Screens (Frontend)
+**✨ Screens (Frontend)**
 
 Login • Create Payment • All Transactions • Transaction Status • Analytics • Schools • Settings • Help & Support
 
 
-✨ Key Features
+**✨ Key Features**
 
 🔐 JWT Auth (login protects API routes)
 
@@ -46,7 +46,8 @@ Login • Create Payment • All Transactions • Transaction Status • Analyti
 
 🌓 Dark/Light theme, responsive UI
 
-🚀 Quick Start (Local)
+**🚀 Quick Start (Local)**
+
 Prerequisites
 
 Node.js 18+
@@ -78,7 +79,7 @@ JWT_EXPIRES_IN=1d
 # CORS
 FRONTEND_URL=http://localhost:5173
 
-# payment provider (placeholders)
+# Payment provider (placeholders)
 PG_KEY=pg_test_key
 PAYMENT_API_KEY=replace_with_real_token
 SCHOOL_ID=65b0e6293e9f76a9694d84b4
@@ -116,13 +117,13 @@ POST /webhook → provider calls this; updates transaction status in DB
 
 
 
-WebhookLog
+**WebhookLog**
 
 Raw webhook payloads + timestamps (for audit/debug)
 
 Add indexes on: school_id, custom_order_id, collect_id, payment_time for performance.
 
-🧭 Frontend Pages
+**🧭 Frontend Pages**
 
 Login (JWT auth)
 
@@ -134,7 +135,7 @@ Status Check (input custom_order_id → show current status)
 
 Global dark/light toggle; animated components via Tailwind keyframes.
 
-🧪 Testing
+**🧪 Testing**
 
 Use Postman (recommended):
 
@@ -144,8 +145,7 @@ Environment: local (localhost), dev (Railway), etc.
 
 Unit tests (optional): npm run test in backend.
 
-🚀 Deployment
-
+**🚀 Deployment**
 Create an account, connect GitHub repository.
 
 Set Root Directory = backend.
@@ -194,7 +194,7 @@ Frontend calls to /api/... will proxy to your backend (no CORS headaches).
 
  Rotate API keys and store in envs (never commit).
 
-🧰 Useful Commands
+**🧰 Useful Commands**
 
 Backend
 
@@ -209,7 +209,7 @@ npm run dev           # dev server
 npm run build         # vite build → dist/
 npm run preview       # preview production build
 
-🐞 Troubleshooting
+**🐞 Troubleshooting**
 
 Frontend 404s on refresh → Ensure vercel.json SPA rewrite.
 
@@ -219,7 +219,7 @@ CORS errors → Either allow your Vercel domain in backend CORS or use the /api 
 
 “Missing script: build” → Run in frontend/ and ensure package.json has "build": "vite build".
 
-🤝 Contributing
+**🤝 Contributing**
 
 Fork the repo & create a feature branch.
 
@@ -230,3 +230,4 @@ Open a Pull Request with screenshots and notes.
 📄 License
 
 MIT
+
