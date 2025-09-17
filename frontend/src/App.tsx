@@ -17,7 +17,7 @@ import { Analytics, Schools, Settings, Help } from './components/pages/MissingPa
 import './index.css';
 import SimplePaymentTest from './components/SimplePaymentTest';
 // Add this route to your router
-import DemoPayment from './pages/DemoPayment';
+
 
 
 
@@ -61,7 +61,7 @@ const AppRoutes: React.FC = () => {
     <Routes>
       <Route path="/login" element={<LoginForm />} />
       // In your routes:
-      <Route path="/demo-payment" element={<DemoPayment />} />
+      {/* <Route path="/demo-payment" element={<DemoPayment />} /> */}
 
       
       {/* Root redirect - goes to login if not authenticated, dashboard if authenticated */}
