@@ -1,70 +1,78 @@
-🏫 **School Payment & Dashboard Application**
+# School Payment & Dashboard
 
-Full-stack app to manage school payments, transactions, and status tracking with a modern React dashboard.
+Full-stack application to manage school payments, transactions and status tracking, with a modern React dashboard and a secure NestJS backend.
 
-**🌐 Live URLs**
+---
 
-Frontend (Vercel): https://your-frontend.vercel.app
+## 🚀 Live (Replace with your deployed URLs)
 
-Backend API (Railway/Render): https://your-backend.onrailway.app
+* **Frontend (Vercel):** `https://your-frontend.vercel.app`
+* **Backend API (Railway/Render):** `https://your-backend.onrailway.app`
+* **API Docs (Swagger):** `https://your-backend.onrailway.app/api`
 
-API Docs (Swagger): https://your-backend.onrailway.app/api
+> Replace the placeholders above after deploying.
 
-Replace the placeholders after you deploy.
+---
 
-**🏗️ Architecture**
-Frontend (Vercel)  ⇄  Backend API (Railway/Render)  ⇄  MongoDB Atlas
+## 🏗 Architecture
 
+**Frontend (Vercel)** ⇄ **Backend API (Railway/Render)** ⇄ **MongoDB Atlas**
 
-**📦 Packages**
+* Frontend: React + Vite + Tailwind (SPA)
+* Backend: NestJS + Mongoose + JWT
+
+---
+
+## ✨ Features
+
+* 🔐 JWT authentication (protects API routes)
+* 💳 Create payments — proxy to payment provider and return redirect URL to hosted checkout
+* 🧾 Webhook endpoint that accepts provider callbacks and updates transaction status
+* 📊 Transactions table with search, filter, sort, pagination and persistent URL filters
+* 🔎 Status lookup by `custom_order_id`
+* 🌓 Global dark/light theme with animated UI components
+* 🛡 Webhook logging for audit and debugging
+
+---
+
+## 📦 Repo layout
+
+```
 school-payment-app/
 ├─ backend/    # NestJS API (MongoDB, JWT, Webhooks)
 └─ frontend/   # React + Vite + Tailwind dashboard (SPA)
+```
 
-**🛠 Tech Stack**
+---
 
-Backend: NestJS, MongoDB Atlas (Mongoose), JWT, Swagger
-Frontend: React, TypeScript, Vite, Tailwind CSS (dark mode, custom animations)
-Tooling: Axios, React Router, Postman, ESLint/Prettier
+## 🛠 Tech Stack
 
-**✨ Screens (Frontend)**
+* **Backend:** NestJS, MongoDB Atlas (Mongoose), JWT, Swagger
+* **Frontend:** React, TypeScript, Vite, Tailwind CSS
+* **Tooling:** Axios, React Router, Postman, ESLint, Prettier
 
-Login • Create Payment • All Transactions • Transaction Status • Analytics • Schools • Settings • Help & Support
+---
 
+## ✅ Quick Start (Local)
 
-**✨ Key Features**
+**Prerequisites**
 
-🔐 JWT Auth (login protects API routes)
+* Node.js v18+
+* MongoDB Atlas connection string
+* Payment gateway credentials (store in backend `.env`)
 
-💳 Create payment (proxy to payment gateway; redirect user to hosted page)
+### 1) Backend (NestJS)
 
-🧾 Webhook to update transaction status
-
-📊 Transactions table (search, filter, sort, paginate)
-
-🔎 Status lookup by custom_order_id
-
-🌓 Dark/Light theme, responsive UI
-
-**🚀 Quick Start (Local)**
-
-Prerequisites
-
-Node.js 18+
-
-MongoDB Atlas connection string
-
-Payment gateway credentials (store in backend .env)
-
-1) Backend (NestJS)
+```bash
 cd backend
 npm install
-cp .env.example .env         # fill values (see below)
-npm run start:dev            # (http://localhost:5173)
+cp .env.example .env   # fill values
+npm run start:dev       # http://localhost:3001 (or PORT from .env)
+```
 
+**Backend `.env` (example)**
 
-Backend .env (example)
-
+```env
 # server
 PORT=3001
 NODE_ENV=development
@@ -83,155 +91,135 @@ FRONTEND_URL=http://localhost:5173
 PG_KEY=pg_test_key
 PAYMENT_API_KEY=replace_with_real_token
 SCHOOL_ID=65b0e6293e9f76a9694d84b4
+```
 
-2) Frontend (Vite + Tailwind)
+> Make sure to never commit `.env` or any secrets to source control.
+
+### 2) Frontend (Vite + Tailwind)
+
+```bash
 cd frontend
 npm install
-cp .env.example .env         # fill values (see below)
-npm run dev                  # http://localhost:5173
+cp .env.example .env  # fill values
+npm run dev            # http://localhost:5173
+```
 
+**Frontend `.env` (example)**
 
-Frontend .env (example)
-
+```env
 VITE_APP_BASE_URL=http://localhost:5173
 VITE_APP_NAME=School Payment Dashboard
+```
 
+---
 
-Tailwind note: files in public/ are served from /.
-Example background: bg-[url('/images/university-background.jpg')] or style={{ backgroundImage: "url('/images/university-background.jpg')" }}.
+## 🔌 API Overview (Key endpoints)
 
-🔌 API Overview
-Auth
+**Auth**
 
-POST /auth/login → returns JWT
+* `POST /auth/login` → returns JWT
 
-Payments
+**Payments**
 
-POST /create-payment → creates payment with provider, returns redirect URL to hosted payment page
+* `POST /create-payment` → create a payment with provider, returns `redirect_url` to hosted checkout
 
-Webhook
+**Webhook**
 
-POST /webhook → provider calls this; updates transaction status in DB
+* `POST /webhook` → provider calls this; backend validates and updates transaction status
 
+**Utilities**
 
+* `GET /transactions` → list transactions (with search, filter, sort, pagination)
+* `GET /transactions/:id` → transaction details
+* `GET /status?custom_order_id=<id>` → quick status lookup
 
+> See Swagger UI at `/api` for full API contract and models.
 
+---
 
-**WebhookLog**
+## 🧵 Database notes
 
-Raw webhook payloads + timestamps (for audit/debug)
+* Use MongoDB Atlas with collections for `transactions`, `schools`, `webhookLogs`, `users`.
+* Indexes recommended: `school_id`, `custom_order_id`, `collect_id`, `payment_time`.
+* WebhookLog stores raw payload and timestamp for audit.
 
-Add indexes on: school_id, custom_order_id, collect_id, payment_time for performance.
+---
 
-**🧭 Frontend Pages**
+## 🧪 Testing
 
-Login (JWT auth)
+* Import `./docs/postman_collection.json` into Postman to test endpoints.
+* Environments: `local` (localhost), `dev` (Railway), `prod` (Vercel/Production host)
+* Unit tests (backend optional):
 
-Transactions Overview (table with search, sort, filters, pagination; URL persists filters)
+```bash
+cd backend
+npm run test
+```
 
-By School (transactions for a specific school_id)
+---
 
-Status Check (input custom_order_id → show current status)
+## 🚀 Deployment
 
-Global dark/light toggle; animated components via Tailwind keyframes.
+### Backend (Railway / Render / Heroku)
 
-**🧪 Testing**
+1. Connect your GitHub repo and point service to the `backend/` folder.
+2. Set Environment Variables in the host dashboard (copy from `.env`).
+3. Build Command: `npm install && npm run build` (if building)
+4. Start Command: `npm run start:prod` or `npm run start`
+5. Ensure CORS allows your frontend domain.
+6. Visit `https://<your-backend>/api` for Swagger.
 
-Use Postman (recommended):
+### Frontend (Vercel)
 
-Import collection from ./docs/postman_collection.json (add one)
+1. Connect GitHub repo and select `frontend/` as Root Directory.
+2. Framework Preset: Vite
+3. Build Command: `npm run build`
+4. Output Directory: `dist`
+5. Set environment variables in Vercel dashboard.
+6. Optional: use `vercel.json` to rewrite `/api/*` to your backend to avoid CORS.
 
-Environment: local (localhost), dev (Railway), etc.
+---
 
-Unit tests (optional): npm run test in backend.
+## 🔒 Production checklist
 
-**🚀 Deployment**
-Create an account, connect GitHub repository.
+* Disable wildcard CORS; allow only the frontend domain.
+* Use a long, strong `JWT_SECRET` and appropriate expiry.
+* Ensure webhook route is publicly reachable and logs every event to `webhookLogs`.
+* Create MongoDB indexes for query performance.
+* Add pagination defaults (`limit=25`, `page=1`) and max limit cap.
+* Validate & sanitize all inputs (especially webhook and payment inputs).
+* Use HTTPS and rotate API keys regularly.
 
-Set Root Directory = backend.
+---
 
-Set Build Command = npm install && npm run build (if applicable)
-Start Command = npm run start:prod (or npm run start)
+## 🐞 Troubleshooting (common issues)
 
-Add Environment Variables from .env (don’t commit secrets).
+* **Frontend 404s on refresh:** Ensure SPA rewrite configured in `vercel.json`.
+* **Images not loading:** Place images in `frontend/public/` and reference with `/images/…`.
+* **CORS errors:** Allow the Vercel domain in backend CORS or use Vercel proxy to backend (`/api`).
+* **Missing script: build:** Ensure `package.json` in `frontend/` contains `"build": "vite build"`.
 
-Ensure CORS allows your frontend domain.
+---
 
-Open Swagger at /api.
+## 🤝 Contributing
 
-Frontend → Vercel
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feat/your-feature`
+3. Commit with clear messages and tests (if applicable)
+4. Open a Pull Request with description, screenshots, and migration notes
 
-Connect GitHub repository.
+---
 
-Set Root Directory = frontend.
-
-Framework Preset = Vite
-Build Command = npm run build
-Output Directory = dist
-
-
-
-}
-
-
-Frontend calls to /api/... will proxy to your backend (no CORS headaches).
-
-🛡️ Production Checklist
-
- Disable wildcard CORS; allow only your frontend domain.
-
- Use long, strong JWT_SECRET; set sensible expiry.
-
- Ensure webhook route is publicly reachable and logs every event.
-
- Create MongoDB indexes (school_id, custom_order_id, collect_id, payment_time).
-
- Add pagination defaults (limit=25, page=1), max limit cap.
-
- Validate & sanitize all inputs.
-
- Turn on HTTPS (hosted providers do this by default).
-
- Rotate API keys and store in envs (never commit).
-
-**🧰 Useful Commands**
-
-Backend
-
-npm run start:dev     # dev
-npm run build         # build (if using Nest build)
-npm run start:prod    # production
-
-
-Frontend
-
-npm run dev           # dev server
-npm run build         # vite build → dist/
-npm run preview       # preview production build
-
-**🐞 Troubleshooting**
-
-Frontend 404s on refresh → Ensure vercel.json SPA rewrite.
-
-Images not loading → Put under frontend/public/ and reference as /images/....
-
-CORS errors → Either allow your Vercel domain in backend CORS or use the /api proxy in vercel.json.
-
-“Missing script: build” → Run in frontend/ and ensure package.json has "build": "vite build".
-
-**🤝 Contributing**
-
-Fork the repo & create a feature branch.
-
-Commit with clear messages.
-
-Open a Pull Request with screenshots and notes.
-
-📄 License
+## 📄 License
 
 MIT
 
+---
 
+If you'd like, I can:
 
+* convert this into a `README.md` file and add a short `vercel.json` example for SPA rewrites,
+* generate example Postman environment entries, or
+* produce a checklist PR template for deployments.
 
-
+Tell me which of the above you'd like me to add next.
