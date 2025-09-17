@@ -216,7 +216,7 @@ npm run test
 ### Login
 ![Login](./frontend/public/images/Screenshots/Screenshot%20(479).png)
 
-### Create Paymen
+### Create Payment
 ![Create Payment](./frontend/public/images/Screenshots/Screenshot%20(480).png)
 
 ### Analytics
@@ -239,6 +239,7 @@ npm run test
 
 ### Extra
 ![Extra](./frontend/public/images/Screenshots/Screenshot%202025-09-17%20134951.png)
+
 
 
 
