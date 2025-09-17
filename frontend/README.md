@@ -2,10 +2,6 @@
 
 A modern, responsive React-based dashboard for managing school payments and transactions.
 
-![React](https://img.shields.io/badge/React-18.2.0-blue.svg)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.0.2-blue.svg)
-![Vite](https://img.shields.io/badge/Vite-4.4.5-purple.svg)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3.3.0-teal.svg)
 
 ## Features
 
@@ -79,10 +75,40 @@ npm install
 ### 2. Environment Setup
 Create `.env.local`:
 ```bash
-VITE_API_BASE_URL=http://localhost:3000/api
+# Development Environment Variables
+VITE_API_URL=http://localhost:3001/api/v1
 VITE_APP_NAME=School Payment Dashboard
 VITE_APP_VERSION=1.0.0
+VITE_ENABLE_DEV_TOOLS=true
+
+# Payment Gateway Configuration
+#VITE_PAYMENT_API_BASE_URL=https://dev-vanilla.edviron.com/erp
+#VITE_PAYMENT_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0cnVzdGVlSWQiOiI2NWIwZTU1MmRkMzE5NTBhOWI0MWM1YmEiLCJJbmRleE9mQXBpS2V5Ijo2fQ.IJWTYCOurGCFdRM2xyKtw6TEcuwXxGnmINrXFfs
+#VITE_PG_KEY=edvtest01
+VITE_SCHOOL_ID=65b0e6293e9f76a9694d84b4
+
+# Application Configuration
+VITE_APP_BASE_URL=http://localhost:5173
+VITE_APP_NAME=School Payment Dashboard
+
+# Environment
 NODE_ENV=development
+
+# Backend API Configuration
+VITE_BACKEND_URL=http://localhost:3001
+VITE_API_TIMEOUT=30000
+
+# Default School Configuration
+VITE_SCHOOL_ID=65b0e6293e9f76a9694d84b4
+
+# Application Configuration
+VITE_APP_BASE_URL=http://localhost:5173
+VITE_APP_NAME=School Payment Dashboard
+
+# Environment
+NODE_ENV=development
+
+
 ```
 
 ### 3. Add Background Image
@@ -109,17 +135,23 @@ For testing purposes, use these demo credentials:
 
 ```
 src/
-├── components/           # Reusable UI components
-│   ├── auth/            # Authentication components
-│   ├── common/          # Shared components
-│   ├── dashboard/       # Dashboard-specific components
-│   ├── layout/          # Layout components
-│   └── payments/        # Payment-related components
-├── context/             # React Context providers
-├── App.tsx             # Main app component
-├── main.tsx            # Entry point
-└── index.css           # Global styles
-```
+├── contexts/
+│   ├── index.tsx          
+│   ├── AuthContext.tsx      
+│   └── ThemeContext.tsx    
+├── components/
+│   ├── common/
+│   │   ├── Button.tsx      
+│   │   └── Input.tsx       
+│   └── auth/
+│       └── LoginForm.tsx   
+├── utils/
+│   ├── constants.ts        
+│   └── helpers.ts          
+├── types/
+│   └── index.ts          
+└── services/
+    └── authService.ts              
 
 ## Key Components
 
@@ -221,16 +253,6 @@ npm run build
 4. Push to branch: `git push origin feature/new-feature`
 5. Submit pull request
 
-## License
-
-This project is licensed under the MIT License.
-
-## Support
-
-For support or questions:
-- Create an issue in the repository
-- Contact the development team
-- Check the documentation
 
 ## Roadmap
 
