@@ -1,4 +1,4 @@
-**🏫 School Payment & Dashboard Application**
+##**🏫 School Payment & Dashboard Application**
 
 Full-stack app to manage school payments, transactions, and status tracking with a modern React dashboard.
 
@@ -230,4 +230,5 @@ Open a Pull Request with screenshots and notes.
 📄 License
 
 MIT
+
 
