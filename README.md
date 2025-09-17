@@ -213,32 +213,33 @@ npm run test
 ### Login Page
 ## 📸 Screenshots
 
-### Dashboard
-![Dashboard](./frontend/public/images/Screenshots/Screenshot%20(479).png)
+### Login
+![Login](./frontend/public/images/Screenshots/Screenshot%20(479).png)
 
-### Login Page
-![Login](./frontend/public/images/Screenshots/Screenshot%20(480).png)
-
-### Transactions
-![Transactions](./frontend/public/images/Screenshots/Screenshot%20(491).png)
-
-### Payment Flow
-![Payment](./frontend/public/images/Screenshots/Screenshot%20(492).png)
+### Create Paymen
+![Create Payment](./frontend/public/images/Screenshots/Screenshot%20(480).png)
 
 ### Analytics
-![Analytics](./frontend/public/images/Screenshots/Screenshot%20(493).png)
+![Analytics](./frontend/public/images/Screenshots/Screenshot%20(491).png)
+
+### School Management
+![School Management](./frontend/public/images/Screenshots/Screenshot%20(492).png)
 
 ### Settings
-![Settings](./frontend/public/images/Screenshots/Screenshot%20(494).png)
+![Settings](./frontend/public/images/Screenshots/Screenshot%20(493).png)
 
-### Help & Support
-![Help](./frontend/public/images/Screenshots/Screenshot%20(495).png)
+### Help and Support
+![Help and Support](./frontend/public/images/Screenshots/Screenshot%20(494).png)
 
-### Dark Mode
-![Dark Mode](./frontend/public/images/Screenshots/Screenshot%20(496).png)
+### Transaction Status Check
+![Transaction Status Check](./frontend/public/images/Screenshots/Screenshot%20(495).png)
+
+### All Transactions
+![All Transactions](./frontend/public/images/Screenshots/Screenshot%20(496).png)
 
 ### Extra
 ![Extra](./frontend/public/images/Screenshots/Screenshot%202025-09-17%20134951.png)
+
 
 
 
