@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, Moon, Sun } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
+import bgImage from '../assets/images/university-background.jpg';
+
 
 interface LoginCredentials {
   email: string;
@@ -91,7 +93,7 @@ const LoginForm: React.FC = () => {
           <div 
             className="w-full h-full bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: `url('/images/university-background.jpg')`
+           backgroundImage: `url(${bgImage})`
             }}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-blue-900/60 via-blue-800/70 to-purple-800/60"></div>
@@ -103,7 +105,7 @@ const LoginForm: React.FC = () => {
           <div 
             className="w-full h-full bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: `url('/images/university-background.jpg')`
+            backgroundImage: `url(${bgImage})`
             }}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-gray-900/80 via-black/85 to-gray-800/80"></div>
