@@ -209,9 +209,13 @@ npm run test
 
 ---
 
-## 📄 License
+## 📸 Screenshots
+### Login Page
+![Login Screenshot](../images/Screenshots/Screenshot (479).png)
+### Dashboard
+![Dashboard Screenshot](./docs/screenshots/dashboard.png)
 
-MIT
+
 
 
 
