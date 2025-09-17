@@ -12,30 +12,17 @@ export class Order {
   @Prop({ type: Types.ObjectId, auto: true })
   _id: Types.ObjectId;
 
-  @Prop({ 
-    type: String, 
-    required: true,
-    index: true 
-  })
+  @Prop({ type: String, required: true, index: true })
   school_id: string;
 
-  @Prop({ 
-    type: String, 
-    required: true,
-    index: true 
-  })
+  @Prop({ type: String, required: true, index: true })
   trustee_id: string;
 
   @Prop({
     type: {
       name: { type: String, required: true },
       id: { type: String, required: true },
-      email: { 
-        type: String, 
-        required: true,
-        lowercase: true,
-        trim: true
-      }
+      email: { type: String, required: true, lowercase: true, trim: true }
     },
     required: true,
     _id: false
@@ -62,11 +49,28 @@ export class Order {
   })
   custom_order_id: string;
 
+  // ADD THESE NEW FIELDS
   @Prop({
-    type: Number,
-    required: true,
-    min: 1
+    type: String,
+    index: true,
+    sparse: true
   })
+  collect_request_id?: string;
+
+  @Prop({
+    type: String,
+    index: true
+  })
+  payment_url?: string;
+
+  @Prop({
+    type: Object,
+    default: null
+  })
+  api_response?: any;
+  // END NEW FIELDS
+
+  @Prop({ type: Number, required: true, min: 1 })
   order_amount: number;
 
   @Prop({
@@ -76,31 +80,10 @@ export class Order {
   })
   status: string;
 
-  @Prop({
-    type: Date,
-    default: Date.now
-  })
+  @Prop({ type: Date, default: Date.now })
   created_at: Date;
 
-  @Prop({
-    type: Date,
-    default: Date.now
-  })
+  @Prop({ type: Date, default: Date.now })
   updated_at: Date;
 }
-
 export const OrderSchema = SchemaFactory.createForClass(Order);
-
-// Indexes for better performance
-OrderSchema.index({ school_id: 1, status: 1 });
-OrderSchema.index({ custom_order_id: 1 }, { unique: true });
-OrderSchema.index({ 'student_info.email': 1 });
-OrderSchema.index({ created_at: -1 });
-
-// Pre-save middleware to update timestamp
-OrderSchema.pre('save', function(next) {
-  if (this.isModified() && !this.isNew) {
-    this.updated_at = new Date();
-  }
-  next();
-});

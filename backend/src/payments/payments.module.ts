@@ -5,14 +5,14 @@ import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
 
 // Import your existing schemas
-import { Order } from '../orders/schemas/order.schema';
-import { OrderStatus } from '../orders/schemas/order-status.schema';
-import { OrderSchema } from '../orders/schemas/order.schema';
-import { OrderStatusSchema } from '../orders/schemas/order-status.schema';
+// FIXED - Import both from same line:
+import { Order, OrderSchema } from '../orders/schemas/order.schema';
+import { OrderStatus, OrderStatusSchema } from '../orders/schemas/order-status.schema';
 
 // Payment-related files
 import { PaymentsController } from './payments.controller';
-import { PaymentsService } from './payments.service';
+
+import { PaymentService } from './payments.service';
 
 @Module({
   imports: [
@@ -34,7 +34,7 @@ import { PaymentsService } from './payments.service';
     ]),
   ],
   controllers: [PaymentsController],
-  providers: [PaymentsService],
-  exports: [PaymentsService], // Export if other modules need to use it
+  providers: [PaymentService],
+  exports: [PaymentService], // Export if other modules need to use it
 })
 export class PaymentsModule {}

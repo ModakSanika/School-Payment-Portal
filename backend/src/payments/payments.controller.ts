@@ -13,7 +13,7 @@ import {
   Logger
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { PaymentsService } from './payments.service';  // Fixed import path
+import { PaymentService } from './payments.service';  // Fixed import path
 import { CreatePaymentDto } from './dto/payment.dto';   // Import DTO directly
 
 @ApiTags('Payments')
@@ -21,7 +21,7 @@ import { CreatePaymentDto } from './dto/payment.dto';   // Import DTO directly
 export class PaymentsController {
   private readonly logger = new Logger(PaymentsController.name);
 
-  constructor(private readonly paymentsService: PaymentsService) {}
+  constructor(private readonly paymentService: PaymentService) {}
 
   @Post('create-payment')
   @HttpCode(HttpStatus.CREATED)
@@ -54,7 +54,7 @@ export class PaymentsController {
       createPaymentDto.gateway_name = 'PhonePe';
     }
 
-    const result = await this.paymentsService.createPayment(createPaymentDto);
+    const result = await this.paymentService.createPayment(createPaymentDto);
     this.logger.log('Payment creation completed');
     return result;
   }
@@ -71,7 +71,7 @@ export class PaymentsController {
     @Query('school_id') schoolId: string
   ) {
     this.logger.log(`Payment status check for: ${collectRequestId}`);
-    return await this.paymentsService.checkPaymentStatus(collectRequestId, schoolId);
+    return await this.paymentService.checkPaymentStatus(collectRequestId, schoolId);
   }
 
   @Get('transactions')
@@ -82,7 +82,7 @@ export class PaymentsController {
   })
   async getAllTransactions() {
     this.logger.log('Fetching all transactions');
-    return await this.paymentsService.getAllTransactions();
+    return await this.paymentService.getAllTransactions();
   }
 
   @Get('transactions/school/:schoolId')
@@ -93,7 +93,7 @@ export class PaymentsController {
   })
   async getTransactionsBySchool(@Param('schoolId') schoolId: string) {
     this.logger.log(`Fetching transactions for school: ${schoolId}`);
-    return await this.paymentsService.getTransactionsBySchool(schoolId);
+    return await this.paymentService.getTransactionsBySchool(schoolId);
   }
 
   @Get('health')
@@ -101,6 +101,6 @@ export class PaymentsController {
   @ApiResponse({ status: 200, description: 'Payment service is healthy' })
   async healthCheck() {
     this.logger.log('Health check requested');
-    return await this.paymentsService.getHealth();
+    return await this.paymentService.getHealth();
   }
 }
