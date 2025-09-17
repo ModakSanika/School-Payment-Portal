@@ -6,9 +6,8 @@ Full-stack application to manage school payments, transactions and status tracki
 
 ## 🚀 Live (Replace with your deployed URLs)
 
-* **Frontend (Vercel):** `https://your-frontend.vercel.app`
-* **Backend API (Railway/Render):** `https://your-backend.onrailway.app`
-* **API Docs (Swagger):** `https://your-backend.onrailway.app/api`
+* **Frontend (Vercel):** `https://vercel.com/modaksanikas-projects/school-payment-portal/A9NkZpvDHWVwQZTQKnBuYpxhHFhG`
+
 
 > Replace the placeholders above after deploying.
 
@@ -213,6 +212,7 @@ npm run test
 ## 📄 License
 
 MIT
+
 
 
 
