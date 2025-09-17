@@ -91,7 +91,7 @@ const LoginForm: React.FC = () => {
           <div 
             className="w-full h-full bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: `url('public/images/university-background.jpg')`
+              backgroundImage: `url('/images/university-background.jpg')`
             }}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-blue-900/60 via-blue-800/70 to-purple-800/60"></div>
@@ -103,7 +103,7 @@ const LoginForm: React.FC = () => {
           <div 
             className="w-full h-full bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: `url('public/images/university-background.jpg')`
+              backgroundImage: `url('/images/university-background.jpg')`
             }}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-gray-900/80 via-black/85 to-gray-800/80"></div>
