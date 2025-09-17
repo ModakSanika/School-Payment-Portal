@@ -1,3 +1,4 @@
+import SimplePaymentTest from '../../components/SimplePaymentTest';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -18,7 +19,11 @@ import {
   X,
   Save
 } from 'lucide-react';
-import {PaymentService} from '../../services/PaymentService';
+// To this:
+import { PaymentServiceCORSFix as PaymentService } from '../../services/PaymentService.corsfix';
+// At the top of your CreatePayment.tsx file, add:
+
+
 
 // Interfaces
 interface PaymentFormData {
@@ -352,6 +357,8 @@ const CreatePayment: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      // Then somewhere in your JSX (maybe at the top), add:
+<SimplePaymentTest />
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>

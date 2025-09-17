@@ -15,6 +15,7 @@ import NotFound from './components/common/NotFound';
 // Import the missing pages
 import { Analytics, Schools, Settings, Help } from './components/pages/MissingPages';
 import './index.css';
+import SimplePaymentTest from './components/SimplePaymentTest';
 
 // Protected Route Component
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -98,7 +99,14 @@ const AppRoutes: React.FC = () => {
           </ProtectedRoute>
         }
       />
-      
+      // In your router file (App.tsx or wherever you define routes)
+
+
+  <Route path="/test-payment" element={<SimplePaymentTest />} />  // ✅ Correct
+
+  
+// Add this route to your existing routes:
+   
       <Route
         path="/create-payment"
         element={
