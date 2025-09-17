@@ -7,6 +7,10 @@ export default {
   darkMode: 'class',
   theme: {
     extend: {
+       backgroundImage: {
+        'university': "url('/images/university-background.jpg')",
+        
+      },
       colors: {
         primary: {
           50: '#eff6ff',
