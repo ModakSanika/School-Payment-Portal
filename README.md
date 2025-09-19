@@ -90,7 +90,6 @@ PAYMENT_API_KEY=replace_with_real_token
 SCHOOL_ID=65b0e6293e9f76a9694d84b4
 ```
 
-> Make sure to never commit `.env` or any secrets to source control.
 
 ### 2) Frontend (Vite + Tailwind)
 
@@ -237,6 +236,7 @@ npm run test
 
 ### Extra
 ![Extra](./frontend/public/images/Screenshots/Screenshot%202025-09-17%20134951.png)
+
 
 
 
