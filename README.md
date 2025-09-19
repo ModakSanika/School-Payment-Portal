@@ -9,8 +9,6 @@ Full-stack application to manage school payments, transactions and status tracki
 * **Frontend (Vercel):** `https://vercel.com/modaksanikas-projects/school-payment-portal/A9NkZpvDHWVwQZTQKnBuYpxhHFhG`
 
 
-> Replace the placeholders above after deploying.
-
 ---
 
 ## 🏗 Architecture
@@ -239,6 +237,7 @@ npm run test
 
 ### Extra
 ![Extra](./frontend/public/images/Screenshots/Screenshot%202025-09-17%20134951.png)
+
 
 
 
